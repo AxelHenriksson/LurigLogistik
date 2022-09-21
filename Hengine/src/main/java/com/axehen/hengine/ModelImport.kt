@@ -37,15 +37,14 @@ class ModelImport {
         }
 
         fun parseOBJMTL(context: Context, renderer: GameRenderer, asset: String): List<Mesh> {
-            val objString = Utils.getStringFromAsset(context, "$asset.obj")
-            //Log.d("ModelImport", "objString from asset: $asset, with ${objString.lines().size} lines")
-            val mtlString = Utils.getStringFromAsset(context, "$asset.mtl")
-            //Log.d("ModelImport", "mtlString from asset: $asset, with ${mtlString.lines().size} lines")
 
-            // Split the obj file string into one string per object. Disregard the first element as that is above the first object declaration
-            val oStrings = objString.split("\\no [^\\s]+".toRegex()).let {
-                it.subList(1, it.size)
-            }
+
+            val objStream = context.assets.open("$asset.obj")
+            val mtlStream = context.assets.open("$asset.mtl")
+
+            objStream.close()
+            mtlStream.close()
+
 
             val posList = ArrayList<Vector>()
             val texCoordList = ArrayList<Vector>()
@@ -53,6 +52,16 @@ class ModelImport {
             val faceList = ArrayList<Array<Vertex>>()
             var activeMaterial = ""
             val meshList = ArrayList<Mesh>()
+
+            // Above is done, below is to be replaced
+
+
+            // Split the obj file string into one string per object. Disregard the first element as that is above the first object declaration
+            //val oStrings = objString.split("\\no [^\\s]+".toRegex()).let {
+            //    it.subList(1, it.size)
+            //}
+
+
 
             for (oString in oStrings) {
                 for (line in oString.lines()) {
